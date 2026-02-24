@@ -48,11 +48,11 @@ fmt.Printf("Name: %s Age: %d\n", name, age)  // formatted
 
 ```go
 // Short declaration (most common, inside functions only)
-name := "John"
-age := 20
+name := "Riya"
+age := 21
 
 // Explicit declaration
-var country string = "Ghana"
+var country string = "Sierra Leone"
 var year int = 2024
 
 // Declare without value (gets zero value)
