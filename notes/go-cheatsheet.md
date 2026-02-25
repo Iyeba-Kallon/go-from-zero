@@ -99,3 +99,41 @@ var backToInt int = int(myFloat)       // float → int
 
 // Go never converts types automatically — always explicit
 ```
+
+---
+
+## Loops
+
+Go only has one loop keyword: `for`.
+
+```go
+// 1. Classic for loop
+for i := 0; i < 5; i++ {
+    fmt.Println(i)
+}
+
+// 2. "While" style loop
+count := 1
+for count <= 5 {
+    fmt.Println(count)
+    count++
+}
+
+// 3. Infinite loop
+for {
+    if done {
+        break
+    }
+}
+
+// 4. Range loop (for arrays, slices, maps, strings)
+fruits := []string{"apple", "banana"}
+for index, value := range fruits {
+    fmt.Printf("Index: %d, Value: %s\n", index, value)
+}
+
+// 5. Loop control
+continue // skip rest of current iteration
+break    // exit loop entirely
+```
+
