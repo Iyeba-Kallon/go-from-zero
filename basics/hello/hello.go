@@ -4,8 +4,7 @@ import "fmt"
 
 func main() {
 	// print to console
-	fmt.Println("Hello, World!")	
-
+	fmt.Println("Hello, World!")
 
 	// print with formating
 
@@ -13,5 +12,5 @@ func main() {
 
 	// print without new line
 	fmt.Print("Hello ")
-	fmt.Println("World\n")
+	fmt.Println("World")
 }
