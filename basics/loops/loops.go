@@ -75,8 +75,8 @@ func main() {
 	// Maps have no guaranteed order, but range still works.
 	fmt.Println("\n--- Range over a map ---")
 	capitals := map[string]string{
-		"Ghana":       "Accra",
-		"Nigeria":     "Abuja",
+		"Ghana":        "Accra",
+		"Nigeria":      "Abuja",
 		"Sierra Leone": "Freetown",
 	}
 	for country, capital := range capitals {
