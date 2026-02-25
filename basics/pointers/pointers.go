@@ -69,10 +69,10 @@ func main() {
 	// fmt.Println(*np) // ← would crash
 
 	// --- 6. When to use pointers ---
-	// ✅ When you want a function to modify a value
-	// ✅ When you have a large struct and don't want to copy it
-	// ✅ When you need to represent "no value" (nil)
-	// ❌ Don't use for basic types like int, string — just pass them directly
+	//  When you want a function to modify a value
+	//  When you have a large struct and don't want to copy it
+	//  When you need to represent "no value" (nil)
+	//  Don't use for basic types like int, string — just pass them directly
 
 	// ============================================================
 	// QUICK REFERENCE:
