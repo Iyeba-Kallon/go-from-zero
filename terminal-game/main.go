@@ -56,28 +56,39 @@ func (g *Game) isWall(p Point) bool {
 	return false
 }
 
+const (
+	Reset  = "\033[0m"
+	Red    = "\033[31m"
+	Green  = "\033[32m"
+	Yellow = "\033[33m"
+	Blue   = "\033[34m"
+	Cyan   = "\033[36m"
+	Bold   = "\033[1m"
+)
+
 func (g *Game) Draw() {
 	g.clearScreen()
-	fmt.Println("Terminal Game: Move '@' to 'G' using WASD (followed by Enter)")
-	fmt.Println("Walls: '#', Goal: 'G'")
-	fmt.Println(strings.Repeat("-", g.width+2))
+	fmt.Printf("%s%s=== TERMINAL ESCAPE ===%s\n", Bold, Cyan, Reset)
+	fmt.Printf("Guide: %s@ (You)%s | %sG (Goal)%s | %s# (Wall)%s\n", Blue, Reset, Yellow, Reset, Red, Reset)
+	fmt.Println("Controls: W (Up), A (Left), S (Down), D (Right) -> Press Enter")
+	fmt.Println(strings.Repeat("-", g.width*2+3))
 	for y := 0; y < g.height; y++ {
-		fmt.Print("|")
+		fmt.Print("| ")
 		for x := 0; x < g.width; x++ {
 			p := Point{x, y}
 			if p == g.player {
-				fmt.Print("@")
+				fmt.Printf("%s@%s ", Blue, Reset)
 			} else if p == g.goal {
-				fmt.Print("G")
+				fmt.Printf("%sG%s ", Yellow, Reset)
 			} else if g.isWall(p) {
-				fmt.Print("#")
+				fmt.Printf("%s#%s ", Red, Reset)
 			} else {
-				fmt.Print(".")
+				fmt.Print(". ")
 			}
 		}
 		fmt.Println("|")
 	}
-	fmt.Println(strings.Repeat("-", g.width+2))
+	fmt.Println(strings.Repeat("-", g.width*2+3))
 }
 
 func (g *Game) Move(dx, dy int) {
@@ -96,7 +107,7 @@ func main() {
 
 	for !game.won {
 		game.Draw()
-		fmt.Print("Move (WASD): ")
+		fmt.Printf("%sNext Move (WASD): %s", Green, Reset)
 		input, _ := reader.ReadString('\n')
 		input = strings.ToLower(strings.TrimSpace(input))
 
@@ -121,5 +132,5 @@ func main() {
 	}
 
 	game.Draw()
-	fmt.Println("CONGRATULATIONS! You reached the goal!")
+	fmt.Printf("\n%s%s✨ CONGRATULATIONS! You escaped the maze! ✨%s\n", Bold, Green, Reset)
 }
