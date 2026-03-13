@@ -28,8 +28,8 @@ var store = struct {
 	nextID int
 }{
 	users: []User{
-		{ID: 1, Name: "Alice", Email: "alice@example.com"},
-		{ID: 2, Name: "Bob", Email: "bob@example.com"},
+		{ID: 1, Name: "Alice", Email: "riya@example.com"},
+		{ID: 2, Name: "Bob", Email: "alpha@example.com"},
 	},
 	nextID: 3, // next user will get ID 3
 }
