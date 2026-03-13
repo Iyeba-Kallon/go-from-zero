@@ -387,6 +387,81 @@ mux.Handle("/path", Logger(http.HandlerFunc(myHandler)))
 
 ---
 
+## Custom Router (Method + Path Dispatch)
+
+`http.ServeMux` matches paths but NOT methods. Build a tiny router on top:
+
+```go
+type route struct {
+    method  string
+    handler http.HandlerFunc
+}
+
+type Router struct {
+    mux    *http.ServeMux
+    routes map[string][]route
+}
+
+func (r *Router) add(method, path string, h http.HandlerFunc) {
+    if _, exists := r.routes[path]; !exists {
+        p := path
+        r.mux.HandleFunc(p, func(w http.ResponseWriter, req *http.Request) {
+            for _, rt := range r.routes[p] {
+                if rt.method == req.Method {
+                    rt.handler(w, req); return
+                }
+            }
+            http.Error(w, "method not allowed", 405)
+        })
+    }
+    r.routes[path] = append(r.routes[path], route{method, h})
+}
+
+func (r *Router) GET(path string, h http.HandlerFunc) { r.add("GET", path, h) }
+func (r *Router) POST(path string, h http.HandlerFunc) { r.add("POST", path, h) }
+func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+    r.mux.ServeHTTP(w, req)
+}
+```
+
+### Middleware Chain Helper
+
+```go
+// Chain(h, Logger, CORS) → Logger(CORS(h))
+func Chain(h http.Handler, mw ...func(http.Handler) http.Handler) http.Handler {
+    for i := len(mw) - 1; i >= 0; i-- { h = mw[i](h) }
+    return h
+}
+
+// Usage
+handler := Chain(router, Logger, CORS)
+server := &http.Server{Addr: ":8080", Handler: handler,
+    ReadTimeout: 10 * time.Second, WriteTimeout: 10 * time.Second}
+```
+
+### Capture Status Code in Middleware
+
+```go
+type responseWriter struct {
+    http.ResponseWriter
+    statusCode int
+}
+func (rw *responseWriter) WriteHeader(code int) {
+    rw.statusCode = code
+    rw.ResponseWriter.WriteHeader(code)
+}
+// wrap: rw := &responseWriter{w, http.StatusOK}
+```
+
+### Serve Static Files
+
+```go
+fs := http.FileServer(http.Dir("./static"))
+mux.Handle("/static/", http.StripPrefix("/static", fs))
+```
+
+---
+
 ## Environment Variables
 
 ```go
