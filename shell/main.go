@@ -12,18 +12,18 @@ func main() {
 	reader := bufio.NewReader(os.Stdin)
  
 	for {
-		// 1. Show the prompt
+		// Show the shell prompt with current working directory
 		cwd, _ := os.Getwd()
 		fmt.Printf("go-shell:%s> ", cwd)
 
-		// 2. Read input
+		// Read user input
 		input, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			continue  
 		}
 
-		// 3. Clean and parse input
+		// Clean and parse input
 		input = strings.TrimSpace(input)
 		if input == "" {
 			continue
@@ -32,7 +32,7 @@ func main() {
 		args := strings.Fields(input)
 		command := args[0]
 
-		// 4. Handle built-in commands
+		// Handle built-in commands
 		switch command {
 		case "exit":
 			fmt.Println("Goodbye!")
@@ -49,7 +49,7 @@ func main() {
 			continue
 		}
 
-		// 5. Execute external commands
+		// Execute external commands
 		cmd := exec.Command(command, args[1:]...)
 
 		// Redirect standard output/error to our terminal
