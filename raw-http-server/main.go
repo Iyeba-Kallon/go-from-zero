@@ -64,7 +64,7 @@ func main() {
 			continue // don't crash the whole server on one bad connection
 		}
 
-		// Spawn a goroutine — this is the line from your blog post!
+	
 		go handleConnection(conn)
 	}
 }
