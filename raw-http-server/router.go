@@ -28,13 +28,13 @@ func handleConnection(conn net.Conn) {
 	switch {
 	case req.Path == "/" && req.Method == "GET":
 		resp = textResponse(200,
-			"Welcome to my raw TCP HTTP server!\n"+
-				"No net/http — just bytes on the wire.\n\n"+
+			"Welcome to my  TCP HTTP server!\n"+
+				"No net/http just bytes on the wire.\n\n"+
 				"Try: /hello  /about  /static/index.html",
 		)
 
 	case req.Path == "/hello" && req.Method == "GET":
-		resp = jsonResponse(200, `{"message":"Hello from raw TCP!","built_with":"net.Listen + go handleConnection(conn)"}`)
+		resp = jsonResponse(200, `{"message":"Hello from TCP!","built_with":"net.Listen + go handleConnection(conn)"}`)
 
 	case req.Path == "/about" && req.Method == "GET":
 		resp = jsonResponse(200, `{"server":"raw-http-server","language":"Go","transport":"TCP","http_library":"none"}`)

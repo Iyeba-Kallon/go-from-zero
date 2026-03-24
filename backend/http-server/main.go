@@ -17,8 +17,8 @@ type User struct {
 
 // In-memory database
 var users = []User{
-	{ID: 1, Name: "Alice", Email: "alice@example.com"},
-	{ID: 2, Name: "Bob", Email: "bob@example.com"},
+	{ID: 1, Name: "riya", Email: "[EMAIL_ADDRESS]"},
+	{ID: 2, Name: "kay", Email: "[EMAIL_ADDRESS]"},
 }
 
 // writeJSON is a helper to centralize JSON response boilerplate
@@ -125,6 +125,4 @@ func main() {
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal("Server error:", err)
 	}
-}
-
 }
