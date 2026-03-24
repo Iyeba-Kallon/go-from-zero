@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TCP HTTP Server</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0a0c14;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      gap: 2rem;
+    }
+
+    .hero {
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #00f5a0, #00d9f5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero p {
+      color: #64748b;
+      font-size: 0.95rem;
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #0f2a1e;
+      color: #00f5a0;
+      border: 1px solid #00f5a033;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    .card {
+      background: #131722;
+      border: 1px solid #1e2535;
+      border-radius: 14px;
+      padding: 1.5rem 2rem;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .card h2 {
+      font-size: 0.85rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+    }
+
+    .fact-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #1e2535;
+      font-size: 0.85rem;
+    }
+    .fact-row:last-child { border-bottom: none; }
+    .fact-label { color: #64748b; }
+    .fact-value { color: #00f5a0; font-family: monospace; font-weight: 600; }
+
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    button {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      background: transparent;
+      border: 1px solid #00f5a044;
+      border-radius: 8px;
+      color: #00f5a0;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: monospace;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    button:hover { background: #00f5a011; border-color: #00f5a0; }
+
+    .terminal {
+      background: #070910;
+      border: 1px solid #1e2535;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      font-family: monospace;
+      font-size: 0.78rem;
+      min-height: 80px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      line-height: 1.7;
+      color: #4ade80;
+      transition: border-color 0.3s;
+    }
+    .terminal.error { color: #f87171; border-color: #7f1d1d; }
+    .terminal.loading { color: #60a5fa; }
+
+    .prompt { color: #64748b; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="badge">No frameworks</div>
+    <h1>TCP HTTP Server</h1>
+    <p>This page is being served by a Go server built with <strong>nothing but <code>net.Listen</code></strong>.
+       No <code>net/http</code>. Every byte you're reading was manually parsed and written by hand.</p>
+  </div>
+
+  <div class="card">
+    <h2>Server Info</h2>
+    <div class="fact-row">
+      <span class="fact-label">Transport</span>
+      <span class="fact-value">TCP (socket)</span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-label">Go package used</span>
+      <span class="fact-value">net + os only</span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-label">HTTP library</span>
+      <span class="fact-value">none, hand-rolled</span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-label">Concurrency model</span>
+      <span class="fact-value">go handleConnection(conn)</span>
+    </div>
+    <div class="fact-row">
+      <span class="fact-label">Port</span>
+      <span class="fact-value">:8081</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Try the Routes</h2>
+    <div class="btn-row">
+      <button onclick="hit('/')">GET /</button>
+      <button onclick="hit('/hello')">GET /hello</button>
+      <button onclick="hit('/about')">GET /about</button>
+      <button onclick="hit('/notfound')">GET /404</button>
+    </div>
+    <br/>
+    <div class="terminal" id="output"><span class="prompt">$</span> Click a route above...</div>
+  </div>
+
+<script>
+  async function hit(path) {
+    const out = document.getElementById('output');
+    out.className = 'terminal loading';
+    out.textContent = `$ GET ${path}\n sending bytes...`;
+    try {
+      const res = await fetch(path);
+      const text = await res.text();
+      out.className = 'terminal';
+      let display = `$ GET ${path}\n← HTTP/1.1 ${res.status}\n\n`;
+      try {
+        display += JSON.stringify(JSON.parse(text), null, 2);
+      } catch {
+        display += text;
+      }
+      out.textContent = display;
+    } catch (e) {
+      out.className = 'terminal error';
+      out.textContent = `$ GET ${path}\n✗ ${e.message}`;
+    }
+  }
+</script>
+</body>
+</html>

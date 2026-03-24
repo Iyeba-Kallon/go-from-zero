@@ -10,7 +10,7 @@ import (
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-
+ 
 	for {
 		// 1. Show the prompt
 		cwd, _ := os.Getwd()
@@ -20,7 +20,7 @@ func main() {
 		input, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
-			continue
+			continue  
 		}
 
 		// 3. Clean and parse input
