@@ -7,7 +7,6 @@ import (
 	"strconv"
 )
 
-// ============================================================
 // ENVIRONMENT VARIABLES IN GO
 //
 // In production backends, config (DB URLs, API keys, ports)
@@ -17,9 +16,7 @@ import (
 //   os.Getenv("KEY")             → returns value or ""
 //   os.LookupEnv("KEY")         → returns value + bool (exists?)
 //   os.Setenv("KEY", "val")     → set a variable
-// ============================================================
 
-// --- Config struct — load all env vars once at startup ---
 type Config struct {
 	Port     string
 	DBUrl    string

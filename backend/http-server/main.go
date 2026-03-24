@@ -8,38 +8,20 @@ import (
 	"time"
 )
 
-// ============================================================
-// HTTP SERVER IN GO
-//
-// Go's standard library includes a full, production-capable
-// HTTP server — no framework needed for the basics.
-//
-// Key pieces:
-//   http.HandleFunc(path, handler) → register a route
-//   http.ListenAndServe(addr, nil) → start the server
-//   w http.ResponseWriter          → write the response
-//   r *http.Request                → read the request
-// ============================================================
-
-// --- Data model ---
+// User represents a basic user model
 type User struct {
 	ID    int    `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
 
-// --- In-memory "database" ---
+// In-memory database
 var users = []User{
-	{ID: 1, Name: "Alice", Email: "alice@example.com"},
-	{ID: 2, Name: "Bob", Email: "bob@example.com"},
+	{ID: 1, Name: "riya", Email: "[EMAIL_ADDRESS]"},
+	{ID: 2, Name: "kay", Email: "[EMAIL_ADDRESS]"},
 }
 
-// ============================================================
-// HANDLER FUNCTIONS
-// A handler has the signature: func(w http.ResponseWriter, r *http.Request)
-// ============================================================
-
-// Helper: write a JSON response
+// writeJSON is a helper to centralize JSON response boilerplate
 func writeJSON(w http.ResponseWriter, status int, data any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
@@ -51,7 +33,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Welcome to my Go API!")
 }
 
-// GET /health → health check (common in production)
+// healthHandler provides a basic health check
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]any{
 		"status":    "ok",
@@ -59,7 +41,7 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// GET /users → list all users
+// getUsersHandler handles requests to list all users
 func getUsersHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		writeJSON(w, http.StatusMethodNotAllowed, map[string]string{
@@ -73,7 +55,7 @@ func getUsersHandler(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// POST /users → create a user
+// createUserHandler decodes JSON input and creates a new user
 func createUserHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		writeJSON(w, http.StatusMethodNotAllowed, map[string]string{
@@ -101,7 +83,7 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// GET/POST /users/manage → router by method
+// usersHandler acts as a simple method router for the /users endpoint
 func usersHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
@@ -115,9 +97,6 @@ func usersHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// ============================================================
-// MAIN — wire up routes and start server
-// ============================================================
 func main() {
 	mux := http.NewServeMux()
 
@@ -147,26 +126,3 @@ func main() {
 		log.Fatal("Server error:", err)
 	}
 }
-
-// ============================================================
-// QUICK REFERENCE:
-//
-//  mux := http.NewServeMux()
-//  mux.HandleFunc("/path", handlerFunc)
-//
-//  handler: func(w http.ResponseWriter, r *http.Request)
-//    r.Method                → "GET", "POST", etc.
-//    r.URL.Path              → "/users"
-//    r.URL.Query().Get("id") → query param ?id=1
-//    json.NewDecoder(r.Body).Decode(&v) → parse body
-//    w.Header().Set("Content-Type", "application/json")
-//    w.WriteHeader(http.StatusOK)
-//    json.NewEncoder(w).Encode(v) → write JSON response
-//
-//  HTTP status codes:
-//    http.StatusOK          200
-//    http.StatusCreated     201
-//    http.StatusBadRequest  400
-//    http.StatusNotFound    404
-//    http.StatusInternalServerError 500
-// ============================================================

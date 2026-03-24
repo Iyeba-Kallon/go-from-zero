@@ -5,7 +5,6 @@ import (
 	"math"
 )
 
-// ============================================================
 // INTERFACES IN GO
 //
 // An interface defines a SET OF METHODS a type must have.
@@ -13,15 +12,11 @@ import (
 // the interface — no "implements" keyword needed.
 //
 // This is how Go achieves flexible, decoupled design.
-// ============================================================
 
-// --- 1. Define an interface ---
 type Shape interface {
 	Area() float64
 	Perimeter() float64
 }
-
-// --- 2. Types that satisfy Shape ---
 
 type Circle struct {
 	Radius float64
@@ -47,16 +42,14 @@ func (r Rectangle) Perimeter() float64 {
 	return 2 * (r.Width + r.Height)
 }
 
-// --- 3. A function that accepts ANY Shape ---
 // This is the power of interfaces: write once, works for all types
 func printShapeInfo(s Shape) {
 	fmt.Printf("Area: %.2f | Perimeter: %.2f\n", s.Area(), s.Perimeter())
 }
 
-// ============================================================
 // THE Stringer INTERFACE (from fmt package)
 // If your type has String() string, fmt uses it automatically
-// ============================================================
+
 type Color int
 
 const (
@@ -78,10 +71,9 @@ func (c Color) String() string {
 	}
 }
 
-// ============================================================
 // INTERFACE COMPOSITION
 // Interfaces can embed other interfaces
-// ============================================================
+
 type Reader interface {
 	Read() string
 }
@@ -95,19 +87,17 @@ type ReadWriter interface {
 	Writer // embeds Writer
 }
 
-// ============================================================
 // THE EMPTY INTERFACE: any
 // Accepts any type — used for unknown/mixed data
 // (like interface{} in older Go code)
-// ============================================================
+
 func describe(v any) {
 	fmt.Printf("value: %v | type: %T\n", v, v)
 }
 
-// ============================================================
 // TYPE ASSERTION & TYPE SWITCH
 // Reverse of interface — extract the concrete type
-// ============================================================
+
 func whatIsIt(v any) {
 	switch val := v.(type) {
 	case int:

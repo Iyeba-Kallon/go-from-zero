@@ -5,7 +5,6 @@ import (
 	"fmt"
 )
 
-// ============================================================
 // ERROR HANDLING IN GO
 //
 // Go has NO exceptions (try/catch). Instead:
@@ -13,9 +12,7 @@ import (
 //   - Callers check it with:  if err != nil { ... }
 //
 // This makes errors EXPLICIT and impossible to ignore by accident.
-// ============================================================
 
-// --- 1. Returning a basic error ---
 func divide(a, b float64) (float64, error) {
 	if b == 0 {
 		return 0, errors.New("cannot divide by zero")
@@ -23,7 +20,6 @@ func divide(a, b float64) (float64, error) {
 	return a / b, nil // nil = no error
 }
 
-// --- 2. Formatted error with context (preferred) ---
 func openFile(filename string) error {
 	if filename == "" {
 		return fmt.Errorf("openFile: filename cannot be empty")
@@ -32,11 +28,9 @@ func openFile(filename string) error {
 	return nil
 }
 
-// ============================================================
 // CUSTOM ERROR TYPES
 // Define your own error type for richer error info
 // Must implement the Error() string method
-// ============================================================
 
 type ValidationError struct {
 	Field   string
@@ -57,12 +51,10 @@ func validateAge(age int) error {
 	return nil
 }
 
-// ============================================================
 // WRAPPING & UNWRAPPING ERRORS
 // fmt.Errorf with %w wraps an error so you can check its type
 // errors.Is() checks if a specific error is in the chain
 // errors.As() extracts a specific error type from the chain
-// ============================================================
 
 var ErrNotFound = errors.New("not found")
 

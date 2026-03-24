@@ -2,12 +2,10 @@ package main
 
 import "fmt"
 
-// ============================================================
 // SLICES & MAPS IN GO
 //
 // Slice = a dynamic list (like an array that can grow)
 // Map   = a dictionary / key-value store (like a hashmap)
-// ============================================================
 
 func main() {
 

@@ -2,23 +2,18 @@ package main
 
 import "fmt"
 
-// ============================================================
 // FUNCTIONS IN GO
 // Functions are first-class citizens — you can pass them around
 // like variables, return them, and store them.
-// ============================================================
 
-// --- 1. Basic function ---
 func greet(name string) {
 	fmt.Println("Hello,", name)
 }
 
-// --- 2. Function with a return value ---
 func add(a int, b int) int {
 	return a + b
 }
 
-// --- 3. Multiple return values (very common in Go) ---
 // This is how Go handles errors — return the result AND an error
 func divide(a, b float64) (float64, error) {
 	if b == 0 {
@@ -27,7 +22,6 @@ func divide(a, b float64) (float64, error) {
 	return a / b, nil // nil means "no error"
 }
 
-// --- 4. Named return values ---
 // You can name the return variables and use a bare "return"
 func minMax(nums []int) (min, max int) {
 	min, max = nums[0], nums[0]
@@ -42,7 +36,6 @@ func minMax(nums []int) (min, max int) {
 	return // returns min and max automatically
 }
 
-// --- 5. Variadic function (accepts any number of args) ---
 func sum(nums ...int) int {
 	total := 0
 	for _, n := range nums {
@@ -51,7 +44,6 @@ func sum(nums ...int) int {
 	return total
 }
 
-// --- 6. Functions as values (first-class) ---
 func applyTwice(f func(int) int, x int) int {
 	return f(f(x))
 }
