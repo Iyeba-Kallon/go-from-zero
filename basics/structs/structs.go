@@ -2,15 +2,12 @@ package main
 
 import "fmt"
 
-// ============================================================
 // STRUCTS IN GO
 //
 // A struct is Go's way of grouping related data together.
 // Think of it like a class, but without inheritance.
 // You add behavior to structs using METHODS.
-// ============================================================
 
-// --- 1. Defining a struct ---
 type User struct {
 	Name    string
 	Email   string
@@ -18,7 +15,6 @@ type User struct {
 	IsAdmin bool
 }
 
-// --- 2. Constructor function (Go convention: NewTypeName) ---
 // Go has no built-in constructors — you write a function instead
 func NewUser(name, email string, age int) *User {
 	return &User{
@@ -28,13 +24,11 @@ func NewUser(name, email string, age int) *User {
 	}
 }
 
-// --- 3. Method on a struct (value receiver) ---
 // The struct is COPIED — safe for reads, no mutation
 func (u User) Greet() string {
 	return fmt.Sprintf("Hi, I'm %s (%s)", u.Name, u.Email)
 }
 
-// --- 4. Method with a pointer receiver ---
 // The struct is NOT copied — use this to modify fields
 func (u *User) Promote() {
 	u.IsAdmin = true
@@ -44,7 +38,6 @@ func (u *User) Birthday() {
 	u.Age++
 }
 
-// --- 5. String() method — custom printing ---
 // If you define String(), fmt will use it automatically
 func (u User) String() string {
 	role := "user"
@@ -54,7 +47,6 @@ func (u User) String() string {
 	return fmt.Sprintf("User{%s | %s | age %d | %s}", u.Name, u.Email, u.Age, role)
 }
 
-// --- 6. Nested struct ---
 type Address struct {
 	City    string
 	Country string

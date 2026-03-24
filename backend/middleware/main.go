@@ -7,7 +7,6 @@ import (
 	"time"
 )
 
-// ============================================================
 // MIDDLEWARE IN GO
 //
 // Middleware is a function that WRAPS around HTTP handlers.
@@ -28,9 +27,7 @@ import (
 //           // do something AFTER
 //       })
 //   }
-// ============================================================
 
-// --- 1. Logging Middleware ---
 func LoggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
@@ -48,7 +45,6 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-// --- 2. CORS Middleware ---
 // Allows cross-origin requests from browsers (needed for frontend apps)
 func CORSMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -66,7 +62,6 @@ func CORSMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-// --- 3. Auth Middleware ---
 // Checks for a bearer token in the Authorization header
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -82,7 +77,6 @@ func AuthMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-// --- 4. Chain multiple middlewares together ---
 // Applies middleware right to left (outermost runs first)
 func Chain(h http.Handler, middlewares ...func(http.Handler) http.Handler) http.Handler {
 	for i := len(middlewares) - 1; i >= 0; i-- {
@@ -91,9 +85,7 @@ func Chain(h http.Handler, middlewares ...func(http.Handler) http.Handler) http.
 	return h
 }
 
-// ============================================================
 // HANDLERS
-// ============================================================
 
 func publicHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, `{"message": "This is public"}`)
@@ -103,9 +95,8 @@ func privateHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, `{"message": "This is protected — you're authenticated!"}`)
 }
 
-// ============================================================
 // MAIN
-// ============================================================
+
 func main() {
 	mux := http.NewServeMux()
 
@@ -133,7 +124,6 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8081", mux))
 }
 
-// ============================================================
 // QUICK REFERENCE:
 //
 //  Middleware signature:
@@ -147,4 +137,3 @@ func main() {
 //
 //  Apply single:  mux.Handle("/path", MyMiddleware(handler))
 //  Chain many:    Chain(handler, Logger, CORS, Auth)
-// ============================================================

@@ -2,7 +2,6 @@ package main
 
 import "fmt"
 
-// ============================================================
 // POINTERS IN GO
 //
 // A pointer holds the MEMORY ADDRESS of a value.
@@ -11,7 +10,6 @@ import "fmt"
 //   - Mutating values inside functions
 //   - Avoiding expensive copies of large structs
 //   - Building linked structures (trees, lists)
-// ============================================================
 
 func main() {
 

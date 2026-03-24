@@ -5,7 +5,6 @@ import (
 	"fmt"
 )
 
-// ============================================================
 // JSON IN GO
 //
 // JSON is the backbone of REST APIs. Go's standard library
@@ -15,9 +14,7 @@ import (
 //   json.Marshal   → Go value → JSON bytes
 //   json.Unmarshal → JSON bytes → Go value
 //   Struct tags    → control field names in JSON
-// ============================================================
 
-// --- Struct with JSON tags ---
 // Tags tell Go what the JSON key name should be
 // `json:"name"`         → use "name" as key
 // `json:"name,omitempty"` → skip field if empty/zero

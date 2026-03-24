@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-// ============================================================
 // CONCURRENCY IN GO
 //
 // Go's concurrency model is built on two ideas:
@@ -15,7 +14,6 @@ import (
 //
 // Philosophy: "Don't communicate by sharing memory;
 //              share memory by communicating."
-// ============================================================
 
 // A simple function we'll run concurrently
 func fetchData(source string, delay time.Duration) string {
@@ -23,10 +21,8 @@ func fetchData(source string, delay time.Duration) string {
 	return fmt.Sprintf("data from %s", source)
 }
 
-// ============================================================
 // PART 1: GOROUTINES
 // Launch with "go funcCall()"
-// ============================================================
 
 func goroutineDemo() {
 	fmt.Println("=== Goroutines ===")
@@ -39,12 +35,10 @@ func goroutineDemo() {
 	fmt.Println("Time:", time.Since(start).Round(time.Millisecond))
 }
 
-// ============================================================
 // PART 2: CHANNELS
 // Make a channel: ch := make(chan Type)
 // Send:          ch <- value
 // Receive:       value := <-ch
-// ============================================================
 
 func channelDemo() {
 	fmt.Println("\n=== Channels ===")
@@ -80,10 +74,8 @@ func channelDemo() {
 	}
 }
 
-// ============================================================
 // PART 3: WAITGROUP
 // Coordinate multiple goroutines — wait for all to finish
-// ============================================================
 
 func waitGroupDemo() {
 	fmt.Println("\n=== WaitGroup ===")
@@ -105,10 +97,8 @@ func waitGroupDemo() {
 	fmt.Println("All results:", results)
 }
 
-// ============================================================
 // PART 4: MUTEX — protecting shared data
 // Use sync.Mutex when multiple goroutines write to the SAME variable
-// ============================================================
 
 func mutexDemo() {
 	fmt.Println("\n=== Mutex (safe counter) ===")
@@ -130,10 +120,8 @@ func mutexDemo() {
 	fmt.Println("Counter (should be 1000):", counter)
 }
 
-// ============================================================
 // PART 5: SELECT
 // Like a switch, but for channels — waits for whichever fires first
-// ============================================================
 
 func selectDemo() {
 	fmt.Println("\n=== Select ===")
